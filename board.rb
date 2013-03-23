@@ -64,30 +64,31 @@ class Board
     
     piece.vectors.each do |vector|
       slide = [start[0] + vector[0], start[1] + vector[1]]
-      if slide == finish    
-        move_piece(piece, start, finish, board) 
-        return true
-      end
-      
+      return true if check_slide(piece, start, finish, board, slide)
       piece.vectors.each do |vector|
+        
         jump = [slide[0] + vector[0], slide[1] + vector[1]]
         next if board.rows[slide[0]][slide[1]].nil?
-        if board.rows[slide[0]][slide[1]].color != color 
-          if jump == finish 
-            move_piece(piece, start, finish, board, slide) 
-            return true
-          end
-        end
+        return true if check_jump(piece, start, finish, board, slide, jump, color)
       end
     end
     false
   end
   
-  def check_slide
-    slide = [start[0] + vector[0], start[1] + vector[1]]
+  def check_slide(piece, start, finish, board, slide)
     if slide == finish    
       move_piece(piece, start, finish, board) 
       return true
+    end
+  end
+  
+  def check_jump(piece, start, finish, board, slide, jump, color)
+    if board.rows[slide[0]][slide[1]].color != color 
+      if jump == finish 
+        killed = slide
+        move_piece(piece, start, finish, board, killed) 
+        return true
+      end
     end
   end
   
@@ -99,12 +100,11 @@ class Board
         return false
       end
     end
-    #if it never returns false, path is valid. Perform move on real board
+    #if it never returns false, then the path is valid. Perform move on real board
     count.times do |i|
       validate(color, path[i], path[i + 1], self)
     end
   end  
-  
   
   def move_piece(piece, start, finish, board, killed = nil)
     board.rows[finish[0]][finish[1]] = piece
@@ -130,6 +130,24 @@ class Board
     new_board.rows = self.rows.deep_dup
     new_board
   end
-  
- 
 end
+
+class Array
+  def deep_dup
+    new_array = []
+    self.each do |el|
+      if el.is_a?(Array)
+        new_array << el.deep_dup
+      else
+        if el.nil?
+          new_array << el
+        else
+          new_array << el.dup
+        end
+      end
+    end
+
+    new_array
+  end
+end
+

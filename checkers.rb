@@ -24,7 +24,6 @@ class Game
       @current_player = @current_player == :red ? :black : :red
     end
   end
-
 end
 
 class Player
@@ -63,25 +62,6 @@ class Player
       return array if input == "f"
       array << input.split(",").map! {|x| x.to_i}
     end
-  end
-end
-
-class Array
-  def deep_dup
-    new_array = []
-    self.each do |el|
-      if el.is_a?(Array)
-        new_array << el.deep_dup
-      else
-        if el.nil?
-          new_array << el
-        else
-          new_array << el.dup
-        end
-      end
-    end
-
-    new_array
   end
 end
 
