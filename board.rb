@@ -1,4 +1,3 @@
-
 class Board
   attr_accessor :rows
   def initialize
@@ -65,8 +64,8 @@ class Board
     piece.vectors.each do |vector|
       slide = [start[0] + vector[0], start[1] + vector[1]]
       return true if check_slide(piece, start, finish, board, slide)
-      piece.vectors.each do |vector|
-        
+      
+      piece.vectors.each do |vector|  
         jump = [slide[0] + vector[0], slide[1] + vector[1]]
         next if board.rows[slide[0]][slide[1]].nil?
         return true if check_jump(piece, start, finish, board, slide, jump, color)
