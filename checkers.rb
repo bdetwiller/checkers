@@ -1,3 +1,7 @@
+#REV: So sorry it took me so long. I have been pretty sick and I spaced on this.
+#REV: Anyway, your code looks great! Very concise, clear, straightforward. Nice!
+
+
 require 'colorize'
 require 'debugger'
 require './piece.rb'
@@ -5,6 +9,7 @@ require './board.rb'
 # coding: utf-8
 
 class Game
+  #REV: conisider having a class method that creates the players & board and passes them into Game.new, creating and kicking off the game.
   attr_reader :board, :current_player
   def initialize
     @players = {
@@ -17,7 +22,10 @@ class Game
   
   def run
     @board.setup
-    @over = false
+    @over = false #REV: dont think you need @over to be an instance variable.
+    #REV: Or a variable at all for that matter. 
+    #REV: Actually I would just use: "while true" like you do below.
+    #REV: ...that is, unless you are interacting with @over from somewhere else.
     until @over
       @board.render_board
       @players[@current_player].play_turn(board)
@@ -65,7 +73,7 @@ class Player
   end
 end
 
-Game.new.run
+Game.new.run #REV: with a class method, you would just call that down here.
 
 
 

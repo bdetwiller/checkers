@@ -1,3 +1,5 @@
+#REV: Great job here.
+
 class Board
   attr_accessor :rows
   def initialize
@@ -5,7 +7,7 @@ class Board
     @pieces = []
   end
   
-  def make_board
+  def make_board 
     @rows = Array.new(8) { Array.new(8) }
   end
   
@@ -17,13 +19,15 @@ class Board
   def set_pieces(row_index, color)
     (row_index..row_index + 2).each do |row|
       8.times do |col|
-        next if col.odd? if row.even?
-        next if col.even? if row.odd?
-        @rows[row][col] = Piece.new([[row],[col]], color)
+        next if col.odd? if row.even? #REV: I think you can just say:
+        next if col.even? if row.odd? #REV: "next if (row+col).odd?"
+        @rows[row][col] = Piece.new([[row],[col]], color) 
       end
     end
   end
   
+  #REV: maybe there's more that you can move out like switch_color to tighten
+  #REV: this method up a little bit.
   def render_board
     sq_color = :white
     print "   "
@@ -40,7 +44,7 @@ class Board
         else
           print "   ".colorize( :background => sq_color )
         end
-        sq_color = switch_color(sq_color)
+        sq_color = switch_color(sq_color) #REV: I like that you moved this out.
       end
       puts
     end
@@ -57,7 +61,9 @@ class Board
     end
   end
   
-  def validate(color, start, finish, board)
+  def validate(color, start, finish, board) #REV: gets a little confusing with 
+    #REV: all of the indices. Maybe you can override the Board [] method to 
+    #REV: clear things up a bit?
     piece = board.rows[start[0]][start[1]]
     return false unless board.rows[finish[0]][finish[1]].nil?
     
@@ -111,10 +117,10 @@ class Board
     board.rows[start[0]][start[1]] = nil
     board.rows[killed[0]][killed[1]] = nil unless killed.nil?
     
-    make_king(piece)
-  end
+    make_king(piece) #REV: not sure if make_king is the best name for this
+  end                #REV: if it's not always kinging the piece.
   
-  def make_king(piece)
+  def make_king(piece) #REV: I think you could combine the if/elsif with an OR 
     if piece.color == :red && piece.location[0] == 7
       piece.make_king
       "Congrats you have a KING!"
@@ -124,7 +130,7 @@ class Board
     end 
   end
   
-  def duplicate
+  def duplicate #REV: DEEEEP DUUUP. cool.
     new_board = Board.new 
     new_board.rows = self.rows.deep_dup
     new_board

@@ -1,4 +1,4 @@
-
+# REV: I dig it.
 class Piece
   attr_accessor :location
   attr_reader :vectors, :color, :symbol
@@ -21,5 +21,5 @@ class Piece
     @vectors = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
     @symbol = ' @ '
   end
-  
+  #REV: superfluous newline here. I dont think you want newlines between 2 ends
 end
